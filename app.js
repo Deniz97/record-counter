@@ -39,24 +39,23 @@ let getTotalCount = function(min_date, max_date, min_count, max_count, callback)
 
 
 
-app.post('/enpoint/', function (req, res) {
+app.post('/totalcounts/', function (req, res) {
+    // MM-DD-YYYY is expected
     let response_json = req.body
+
 
     
     getTotalCount(response_json.startDate, response_json.endDate, response_json.minCount, response_json.maxCount, (err,data) => {
         res.setHeader('Content-Type', 'application/json');
         console.log(err); // TODO handle error
-        console.log(data);
         res.end(JSON.stringify(data));
     })
 
    
 })
 
-app.listen(3000, () => {
-    console.log(`Example app listening at http://localhost:3000`)
-    //console.log(`Example app listening at http://localhost:${port}`)
-  })
+
+module.exports = app
 
 
 
