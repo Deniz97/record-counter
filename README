@@ -1,0 +1,23 @@
+Running:
+
+$npm install
+$npm start
+
+Testing:
+
+$npm run test
+
+
+Try on:
+
+
+POST
+
+https://record-counter-123.herokuapp.com/totalcounts/
+
+{
+"startDate": "2016-01-26",
+"endDate": "2016-05-02",
+"minCount": 2700,
+"maxCount":3000
+}

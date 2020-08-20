@@ -8,7 +8,7 @@ describe('Sample Test', () => {
 
 
  const supertest = require('supertest');
-const app = require('../app');
+const app = require('../src/app');
 
 describe("Testing the movies API", () => {
 
