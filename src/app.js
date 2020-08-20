@@ -8,7 +8,7 @@ const mongo_url = "mongodb+srv://challengeUser:WUMglwNBaydH8Yvu@challenge-xzwqd.
 
 // TODO refactor to promise
 let getTotalCount = function(min_date, max_date, min_count, max_count){
-    return new Promise((resolve, reject) => { // TODO use reject
+    return new Promise((resolve, reject) => { 
         MongoClient.connect(mongo_url, (err, db) => {
             if (err){
                 reject(err)
@@ -54,7 +54,6 @@ let createResponse = function (data, code=0, message = "Success"){
 app.post('/totalcounts/', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // YYYY-MM-DD is expected, but any valid string for new Date() works, which is a lot
-    // TODO assert json format
     let response_json = req.body
 
     if( new Date(response_json.startDate).toString() == "Invalid Date"){
