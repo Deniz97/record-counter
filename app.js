@@ -4,12 +4,12 @@ var MongoClient = require('mongodb').MongoClient;
 //const cors = require('cors');
 const app = express();
 app.use(express.json());
-const url = "mongodb+srv://challengeUser:WUMglwNBaydH8Yvu@challenge-xzwqd.mongodb.net/getir-case-study?retryWrites=true";
+const mongo_url = "mongodb+srv://challengeUser:WUMglwNBaydH8Yvu@challenge-xzwqd.mongodb.net/getir-case-study?retryWrites=true";
 
 // TODO refactor to promise
 let getTotalCount = function(min_date, max_date, min_count, max_count){
     return new Promise((resolve, reject) => { // TODO use reject
-        MongoClient.connect(url, (err, db) => {
+        MongoClient.connect(mongo_url, (err, db) => {
             if (err){
                 reject(err)
             }
@@ -18,21 +18,21 @@ let getTotalCount = function(min_date, max_date, min_count, max_count){
             dbo.collection("records").aggregate([
                 {
                 "$match": {
-                    "createdAt": { "$lt": new Date(max_date+"T00:00:00.000Z"), "$gt": new Date(min_date + "T00:00:00.000Z"), } // TODO check lte gte // TODO better date parsing
+                    "createdAt": { "$lte": new Date(max_date+"T00:00:00.000Z"), "$gte": new Date(min_date + "T00:00:00.000Z"), } // TODO check gt gte (not specified in pdf) // TODO better date parsing
                 }
                 },
                 {
                     "$project": {
-                        "_id" : 0 , //carry this to after thye last match if neccesey
-                        "totalCount" : { "$sum" : "$counts"},
-                        "createdAt" : 1,
+                        "_id" : 0 , // 0->dont show //carry this to after the last match if neccesery (or remove altogether)
+                        "totalCount" : { "$sum" : "$counts"}, // sum over counts array
+                        "createdAt" : 1, // 1 -> show
                         "key" : 1
                     
                 }
                 },
                 {
                     "$match": {
-                        "totalCount": { "$lt": max_count, "$gt":min_count} // TODO check lte gte
+                        "totalCount": { "$lte": max_count, "$gte":min_count} // TODO check lte gte (not specified in pdf)
                     }
                 }
         ]).toArray((err, data) => {
@@ -49,6 +49,7 @@ let getTotalCount = function(min_date, max_date, min_count, max_count){
 
 app.post('/totalcounts/', function (req, res) {
     // MM-DD-YYYY is expected
+    // TODO assert json format
     let response_json = req.body
 
 
@@ -63,7 +64,7 @@ app.post('/totalcounts/', function (req, res) {
    
 })
 
-
+//exposed for jest/superset, remove if possible, testing should not change appcode
 module.exports = app
 
 
