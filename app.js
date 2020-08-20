@@ -64,6 +64,10 @@ app.post('/totalcounts/', function (req, res) {
    
 })
 
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + "/home.html");
+})
+
 //exposed for jest/superset, remove if possible, testing should not change appcode
 module.exports = app
 
