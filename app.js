@@ -6,6 +6,9 @@ const app = express();
 app.use(express.json());
 const mongo_url = "mongodb+srv://challengeUser:WUMglwNBaydH8Yvu@challenge-xzwqd.mongodb.net/getir-case-study?retryWrites=true";
 
+// const PORT = 8081
+const PORT = process.env.PORT
+
 // TODO refactor to promise
 let getTotalCount = function(min_date, max_date, min_count, max_count){
     return new Promise((resolve, reject) => { // TODO use reject
@@ -69,7 +72,7 @@ app.get('/', function (req, res) {
 })
 
 
-let server = app.listen(8081, function () {
+let server = app.listen(PORT, function () {
     let host = server.address().address
     let port = server.address().port
 
