@@ -68,6 +68,14 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + "/home.html");
 })
 
+
+let server = app.listen(8081, function () {
+    let host = server.address().address
+    let port = server.address().port
+
+    console.log("Example app listening at http://%s:%s", "localhost", port)
+})
+
 //exposed for jest/superset, remove if possible, testing should not change appcode
 module.exports = app
 
