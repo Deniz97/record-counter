@@ -17,8 +17,8 @@ let getTotalCount = function(min_date, max_date, min_count, max_count){
 
             dbo.collection("records").aggregate([
                 {
-                "$match": {
-                    "createdAt": { "$lte": new Date(max_date+"T00:00:00.000Z"), "$gte": new Date(min_date + "T00:00:00.000Z"), } // TODO check gt gte (not specified in pdf) // TODO better date parsing
+                "$match": { // This creates UTC time by default.
+                    "createdAt": { "$lte": new Date(max_date), "$gte": new Date(min_date), } // TODO check gt gte (not specified in pdf) // TODO better date parsing
                 }
                 },
                 {
@@ -48,14 +48,22 @@ let getTotalCount = function(min_date, max_date, min_count, max_count){
 
 
 app.post('/totalcounts/', function (req, res) {
-    // MM-DD-YYYY is expected
+    res.setHeader('Content-Type', 'application/json');
+    
+    // YYYY-MM-DD is expected
+    
     // TODO assert json format
     let response_json = req.body
 
+    if( new Date(response_json.startDate).toString() == "Invalid Date"){
+        // TODO log
+        res.status(400)
+        res.end(JSON.stringify({"error" : "Invalid Date Format"}));
+        return;
+    }
 
     
     getTotalCount(response_json.startDate, response_json.endDate, response_json.minCount, response_json.maxCount).then((data) => {
-        res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(data));
     }).catch((err) => {
         throw err;

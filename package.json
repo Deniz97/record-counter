@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node src/server.js" 
+    "start": "node src/server.js"
   },
   "author": "",
   "license": "ISC"
