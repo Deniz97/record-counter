@@ -46,27 +46,31 @@ let getTotalCount = function(min_date, max_date, min_count, max_count){
 })};
 
 
+let createResponse = function (data, code=0, message = "Success"){
+    
+    return JSON.stringify( Object.assign({}, data, {"code" : code, "msg" : message})); // TODO may cost performance, did this way so we do not mutate data
+}
 
 app.post('/totalcounts/', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    
-    // YYYY-MM-DD is expected
-    
+    // YYYY-MM-DD is expected, but any valid string for new Date() works, which is a lot
     // TODO assert json format
     let response_json = req.body
 
     if( new Date(response_json.startDate).toString() == "Invalid Date"){
         // TODO log
         res.status(400)
-        res.end(JSON.stringify({"error" : "Invalid Date Format"}));
+        res.end(createResponse({"records" : null}, 2, "Invalid Date Format"));
         return;
     }
 
     
     getTotalCount(response_json.startDate, response_json.endDate, response_json.minCount, response_json.maxCount).then((data) => {
-        res.end(JSON.stringify(data));
+        res.end(createResponse({"records" : data}));
     }).catch((err) => {
-        throw err;
+        //console.log(err);
+        res.end(createResponse({"records" : null}, 1, err.message));
+        // TODO handle/log error
     })
 
    
