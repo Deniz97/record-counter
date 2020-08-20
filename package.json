@@ -20,7 +20,8 @@
     ]
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node app.js" 
   },
   "author": "",
   "license": "ISC"
