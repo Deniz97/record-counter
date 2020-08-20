@@ -1,4 +1,4 @@
-
+var path = require('path');
 const express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 //const cors = require('cors');
@@ -76,7 +76,7 @@ app.post('/totalcounts/', function (req, res) {
 })
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + "/../frontend/home.html");
+    res.sendFile(path.resolve(__dirname + "/../frontend/home.html"));
 })
 
 
