@@ -1,3 +1,4 @@
+
 describe('Sample Test', () => {
     it('should test that true === true', () => {
       expect(true).toBe(true)
@@ -22,10 +23,13 @@ describe("Testing the movies API", () => {
             });
 
 		expect(response.status).toBe(200);
-		expect(response.body.length).toBe(24);
-		
+        expect(response.body.length).toBe(24);
+        expect("key" in response.body[0]).toBe(true);
+        expect("totalCount" in response.body[0]).toBe(true);
+        expect("createdAt" in response.body[0]).toBe(true);
+        });
 
-	});
 
-});
-
+        // TODO add error testing
+    
+    });
